@@ -1,0 +1,17 @@
+---
+- hosts: app2
+  become: true
+  become_method: sudo
+  gather_facts: no
+
+  tasks: 
+  - name: Update all packages to the latest version
+    apt:
+      name: "*"     
+      state: latest
+
+  - name: Install Dependencies
+    apt:
+      pkg: ['chromium-browser', 'chromium-chromedriver', 'git', 'maven', 'vim', 'openjdk-8-jre-headless']
+      state: present
+      update_cache: yes
