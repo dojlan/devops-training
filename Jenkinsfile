@@ -16,9 +16,10 @@
 			sh "wget https://apt.puppetlabs.com/puppet6-release-bionic.deb"
 			sh "sudo dpkg -i puppet6-release-bionic.deb"
 			sh "sudo apt-get -y install puppet"
+			sh "sudo apt autoremove"
 			sh " sleep 100s"
-			sh "sudo /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true"
-			sh "sudo /opt/puppetlabs/bin/puppet agent --waitforcert 60"
+			sh "sudo puppet resource service puppet ensure=running enable=true"
+			sh "sudo puppet agent --waitforcert 60"
 			timeout(time: 1, unit: 'MINUTES')
 			}
         	}   
