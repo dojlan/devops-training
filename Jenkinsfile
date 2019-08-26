@@ -20,7 +20,7 @@
 			sh " sleep 100s"
 			sh "sudo puppet resource service puppet ensure=running enable=true"
 			sh "sudo puppet agent --waitforcert 60"
-			timeout(time: 1, unit: 'MINUTES')
+			sh " sleep 10s"
 			}
         	}   
 
@@ -31,7 +31,7 @@
     
 		stage('PuppetSign') {
 			echo "Signing Client Certificate"
-			sh "sudo /opt/puppetlabs/bin/puppetserver ca sign puppetagent1"
+			sh "sudo /opt/puppetlabs/bin/puppetserver ca sign --certname puppetagent1"
 		    	}
         	}
         
