@@ -66,7 +66,7 @@ pipeline {
 		    echo "cleaning up the workspace"
 			cleanWs()
 			//label "jenkins_test_server"
-		  }		  
+		  }
+	
 }
-   
-}
+
