@@ -37,27 +37,21 @@
         
 	   node("jenkins_test_server") {
 		stage('Docker_Installation') {
-			steps {
-			   script {
-				echo "Installing Docker on PuppetAgent"
-				sh "sudo /opt/puppetlabs/bin/puppet agent -t"
-				timeout(time: 1, unit: 'MINUTES')
+			echo "Installing Docker on PuppetAgent"
+			sh "sudo /opt/puppetlabs/bin/puppet agent -t"
+			timeout(time: 1, unit: 'MINUTES')
+			}
+
+            	stage('Docker_Image_Pull') {
+			echo "Installing Docker on PuppetAgent"
+			dockerfile {
+				filename 'Dockerfile'
+				dir '/var/lib/jenkins/devops-training'
+				label 'projcert'
+				args '-v /tmp:/tmp'
 				}
 			}
-            	}
-            
-            	stage('Docker_Image_Pull') {
-			steps {
-				echo "Installing Docker on PuppetAgent"
-				dockerfile {
-					filename 'Dockerfile'
-					dir '/var/lib/jenkins/devops-training'
-					label 'projcert'
-					args '-v /tmp:/tmp'
-					}
-			}
-		}
-            
+
             //stage('Docker_Deployment') {			
 		    //    echo "Deploying A Docker Container with PHP Website"
 		    //    sh "cd /var/lib/jenkins/devops-training"
@@ -66,22 +60,18 @@
             //}
             
 		   stage('Docker_Container_Run') {
-			steps {
-		        	echo "Running Docker Container on port 8010"
-                		sh "docker run -itd -p 8010:80 --name=my_cert_proj projcert"
+			echo "Running Docker Container on port 8010"
+                	sh "docker run -itd -p 8010:80 --name=my_cert_proj projcert"
             		} 
-		   }
-            
+
     		   stage('Testing') {
-			steps {
-    		    		echo "Testing PHP Website"
-			    	dir("cd /var/lib/jenkins/devops-training"){
-			    	sh "sudo java -jar projCert.jar"
-			    	timeout(time: 1, unit: 'MINUTES')
-			    		}
-				}	
-    		   }
-            
+			echo "Testing PHP Website"
+			dir("cd /var/lib/jenkins/devops-training"){
+			sh "sudo java -jar projCert.jar"
+			timeout(time: 1, unit: 'MINUTES')
+			}
+		   }	
+
 		   stage('clean up') {			
 			echo "cleaning up the workspace"
 			cleanWs()
