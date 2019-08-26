@@ -31,7 +31,7 @@
     
 		stage('PuppetSign') {
 			echo "Signing Client Certificate"
-			sh "sudo /opt/puppetlabs/bin/puppetserver ca sign --certname puppetagent1"
+			//sh "sudo /opt/puppetlabs/bin/puppetserver ca sign --certname puppetagent1"
 		    	}
         	}
         
