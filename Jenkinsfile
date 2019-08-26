@@ -1,16 +1,16 @@
 pipeline {
-   //agent none
-	environment {
-      		env.JAVA_HOME=tool name:  'myjava', type: 'jdk'
-      		def mvnHome=tool name:  'mymaven', type: 'maven'
-      		def mvnCMD="${mvnHome}/bin/mvn"
-		}
+   agent none
+	//environment {
+      	//	env.JAVA_HOME=tool name:  'myjava', type: 'jdk'
+      	//	def mvnHome=tool name:  'mymaven', type: 'maven'
+      	//	def mvnCMD="${mvnHome}/bin/mvn"
+	//	}
         stages {
 		  stage ('checkout') {
-		    agent {
+		    //agent {
 			  checkout scm 
               		  label "jenkins_test_server"
-			}
+			//}
 		  }
     	  stage ('compilation 1') {
 		    agent {
