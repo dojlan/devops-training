@@ -1,22 +1,16 @@
 pipeline {
    //agent none
-	//environment {
-      	//	env.JAVA_HOME=tool name:  'myjava', type: 'jdk'
-      	//	def mvnHome=tool name:  'mymaven', type: 'maven'
-      	//	def mvnCMD="${mvnHome}/bin/mvn"
-	//	}
-        stages {
-		  stage ('checkout') {
-			  agent { node { "jenkins_test_server" } 
-			  checkout scm 
-              		  //label "jenkins_test_server"
-			}
+	node ("jenkins_test_server") {	
+      		env.JAVA_HOME=tool name:  'myjava', type: 'jdk'
+      		def mvnHome=tool name:  'mymaven', type: 'maven'
+      		def mvnCMD="${mvnHome}/bin/mvn"
+
+           stages {
+		stage ('checkout') {
+			checkout scm 
 		  }
-    	  stage ('compilation 1') {
-		    agent { node { "jenkins_test_server" }
-			   echo "Installing Puppet Agent"
-			   //label "jenkins_test_server"
-			}
+    	  	stage ('compilation 1') {
+			echo "Installing Puppet Agent"
 			steps {
 			  sh "whoami"
 			  sh "sudo ufw allow 8140"
@@ -26,32 +20,33 @@ pipeline {
 			  sh " sleep 100s"
 			  sh "sudo /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true"
 			  sh "sudo /opt/puppetlabs/bin/puppet agent --waitforcert 60"
-			   timeout(time: 1, unit: 'MINUTES')			 
+			  timeout(time: 1, unit: 'MINUTES')			 
 			}
-          }
-		  stage ('compilation 2') {
-		    agent { node { "master" }
-              echo "Signing Client Certificate"
-			  //label "master"
-			}
+          	}
+	   }
+	}
+
+	node ("master") {		
+		stage ('compilation 2') {
+	        	echo "Signing Client Certificate"
+
 			steps {
 			  sh "sudo /opt/puppetlabs/bin/puppetserver ca sign puppetagent1"
 			}
 		  }
-		  stage ('compilation 3') {
-		    agent { node { "jenkins_test_server" }
-              echo "Installing Docker on PuppetAgent"
-			  //label "jenkins_test_server"
-			}
+	}
+	
+	node ("jenkins_test_server") {
+	   stages {
+		stage ('compilation 3') {
+	    		echo "Installing Docker on PuppetAgent"
 			steps {
-			  sh "sudo /opt/puppetlabs/bin/puppet agent -t"
-              timeout(time: 1, unit: 'MINUTES')
+			   sh "sudo /opt/puppetlabs/bin/puppet agent -t"
+              		   timeout(time: 1, unit: 'MINUTES')
 			}
 		  }
 		  stage ('docker') {
-		    agent { node { "jenkins_test_server" }
-              echo "Installing Docker on PuppetAgent"
-			  //label "jenkins_test_server"
+			  echo "Installing Docker on PuppetAgent"
 			  dockerfile {
 				filename 'Dockerfile'
 				dir '/var/lib/jenkins/devops-training'
@@ -59,21 +54,19 @@ pipeline {
 				args '-v /tmp:/tmp'
 			  }
 			}
-		  }
-		  stage ('docker-run') {
-		    agent { node { "jenkins_test_server" }
-              echo "Running Docker Container"
-			  //label "jenkins_test_server"		
-			  docker.image("my_cert_proj").withRun('-p 8010:80') {c ->
-				sh "curl -i http://${hostIp(c)}:8080/"
-			  }
-            } 
-		  }
+		stage ('docker-run') {
+			echo "Running Docker Container"
+			docker.image("my_cert_proj").withRun('-p 8010:80') {c ->
+			sh "curl -i http://${hostIp(c)}:8080/"
+			}
+            	   } 
+		}
+	}
           stage('clean up') {			
 		    echo "cleaning up the workspace"
 			cleanWs()
 			//label "jenkins_test_server"
 		  }		  
-		}
+}
    
 }
