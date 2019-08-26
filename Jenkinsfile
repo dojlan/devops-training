@@ -38,7 +38,7 @@
 	   node("jenkins_test_server") {
 		stage('Docker_Installation') {
 			echo "Installing Docker on PuppetAgent"
-			sh "sudo /opt/puppetlabs/bin/puppet agent -t"
+			sh "sudo puppet agent -t"
 			timeout(time: 1, unit: 'MINUTES')
 			}
 
