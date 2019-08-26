@@ -1,4 +1,4 @@
-Pipeline {
+
 	try {
 	   node("jenkins_test_server") {
 	        env.JAVA_HOME=tool name:  'myjava', type: 'jdk'
@@ -95,4 +95,4 @@ Pipeline {
 		step([$class: 'Mailer',notifyEveryUnstableBuild: true,recipients: 'laanuo@yahoo',sendToIndividuals: true])
 		}
 	}
-}
+
