@@ -1,5 +1,5 @@
 pipeline {
-   agent none
+   //agent none
 	//environment {
       	//	env.JAVA_HOME=tool name:  'myjava', type: 'jdk'
       	//	def mvnHome=tool name:  'mymaven', type: 'maven'
@@ -7,15 +7,15 @@ pipeline {
 	//	}
         stages {
 		  stage ('checkout') {
-		    //agent {
+			  agent { node { "jenkins_test_server" } 
 			  checkout scm 
-              		  label "jenkins_test_server"
-			//}
+              		  //label "jenkins_test_server"
+			}
 		  }
     	  stage ('compilation 1') {
-		    agent {
+		    agent { node { "jenkins_test_server" }
 			   echo "Installing Puppet Agent"
-			   label "jenkins_test_server"
+			   //label "jenkins_test_server"
 			}
 			steps {
 			  sh "whoami"
@@ -30,18 +30,18 @@ pipeline {
 			}
           }
 		  stage ('compilation 2') {
-		    agent {
+		    agent { node { "master" }
               echo "Signing Client Certificate"
-			  label "master"
+			  //label "master"
 			}
 			steps {
 			  sh "sudo /opt/puppetlabs/bin/puppetserver ca sign puppetagent1"
 			}
 		  }
 		  stage ('compilation 3') {
-		    agent {
+		    agent { node { "jenkins_test_server" }
               echo "Installing Docker on PuppetAgent"
-			  label "jenkins_test_server"
+			  //label "jenkins_test_server"
 			}
 			steps {
 			  sh "sudo /opt/puppetlabs/bin/puppet agent -t"
@@ -49,9 +49,9 @@ pipeline {
 			}
 		  }
 		  stage ('docker') {
-		    agent {
+		    agent { node { "jenkins_test_server" }
               echo "Installing Docker on PuppetAgent"
-			  label "jenkins_test_server"
+			  //label "jenkins_test_server"
 			  dockerfile {
 				filename 'Dockerfile'
 				dir '/var/lib/jenkins/devops-training'
@@ -61,9 +61,9 @@ pipeline {
 			}
 		  }
 		  stage ('docker-run') {
-		    agent {
+		    agent { node { "jenkins_test_server" }
               echo "Running Docker Container"
-			  label "jenkins_test_server"		
+			  //label "jenkins_test_server"		
 			  docker.image("my_cert_proj").withRun('-p 8010:80') {c ->
 				sh "curl -i http://${hostIp(c)}:8080/"
 			  }
@@ -72,7 +72,7 @@ pipeline {
           stage('clean up') {			
 		    echo "cleaning up the workspace"
 			cleanWs()
-			label "jenkins_test_server"
+			//label "jenkins_test_server"
 		  }		  
 		}
    
