@@ -11,20 +11,16 @@
     
 		stage('Puppet Install') {
 		        echo "Installing Puppet Agent"
-			steps {
-				scripts {
-				    sh "whoami"
-				    sh "sudo ufw allow 8140"
-				    sh "wget https://apt.puppetlabs.com/puppet6-release-bionic.deb"
-				    sh "sudo dpkg -i puppet6-release-bionic.deb"
-				    sh "sudo apt-get -y install puppet"
-				    sh " sleep 100s"
-				    sh "sudo /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true"
-				    sh "sudo /opt/puppetlabs/bin/puppet agent --waitforcert 60"
-				    timeout(time: 1, unit: 'MINUTES')
-				    }
+			sh "whoami"
+			sh "sudo ufw allow 8140"
+			sh "wget https://apt.puppetlabs.com/puppet6-release-bionic.deb"
+			sh "sudo dpkg -i puppet6-release-bionic.deb"
+			sh "sudo apt-get -y install puppet"
+			sh " sleep 100s"
+			sh "sudo /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true"
+			sh "sudo /opt/puppetlabs/bin/puppet agent --waitforcert 60"
+			timeout(time: 1, unit: 'MINUTES')
 			}
-		    }
         	}   
 
 	   node {
@@ -41,10 +37,12 @@
 	   node("jenkins_test_server") {
 		stage('Docker_Installation') {
 			steps {
+			   script {
 				echo "Installing Docker on PuppetAgent"
 				sh "sudo /opt/puppetlabs/bin/puppet agent -t"
 				timeout(time: 1, unit: 'MINUTES')
 				}
+			}
             	}
             
             	stage('Docker_Image_Pull') {
