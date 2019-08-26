@@ -7,8 +7,7 @@ pipeline {
 		  stage ('checkout') {
 		    agent {
 			  checkout scm 
-              git "git@github.com:dojlan/devops-training.git"
-			  label "jenkins_test_server"
+              		  label "jenkins_test_server"
 			}
 		  }
     	  stage ('compilation 1') {
