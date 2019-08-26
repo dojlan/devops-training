@@ -11,7 +11,8 @@
     
 		stage('Puppet Install') {
 		        echo "Installing Puppet Agent"
-				steps {
+			steps {
+				scripts {
 				    sh "whoami"
 				    sh "sudo ufw allow 8140"
 				    sh "wget https://apt.puppetlabs.com/puppet6-release-bionic.deb"
@@ -22,7 +23,8 @@
 				    sh "sudo /opt/puppetlabs/bin/puppet agent --waitforcert 60"
 				    timeout(time: 1, unit: 'MINUTES')
 				    }
-		    	}
+			}
+		    }
         	}   
 
 	   node {
