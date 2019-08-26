@@ -71,7 +71,7 @@ Pipeline {
             		} 
 		   }
             
-    		stage('Testing') {
+    		   stage('Testing') {
 			steps {
     		    		echo "Testing PHP Website"
 			    	dir("cd /var/lib/jenkins/devops-training"){
@@ -79,15 +79,14 @@ Pipeline {
 			    	timeout(time: 1, unit: 'MINUTES')
 			    		}
 				}	
-    		}
+    		   }
             
-		stage('clean up') {			
+		   stage('clean up') {			
 			echo "cleaning up the workspace"
 			cleanWs()
-		    	}
-        	}
-        
-    }
+	  	   }
+	   } 	       
+   }
     
     finally {
 		(currentBuild.result != "ABORTED") && node("master") {
@@ -96,3 +95,4 @@ Pipeline {
 		step([$class: 'Mailer',notifyEveryUnstableBuild: true,recipients: 'laanuo@yahoo',sendToIndividuals: true])
 		}
 	}
+}
