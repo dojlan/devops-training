@@ -2,7 +2,11 @@
 import groovy.util.*
 
 work_dir = '/var/lib/jenkins/workspace'
-deploy_dir = "${work_dir}/test_project1"
+deploy_dir ="${work_dir}/test_project1"
+USER_HOME='/home/edureka'
+DRIVER='wget https://chromedriver.storage.googleapis.com/76.0.3809.126/chromedriver_linux64.zip'
+USER="${edureka}"
+CHROME_DRIVER="${USER_HOME}/${DRIVER}"
 
 properties properties: [
   disableConcurrentBuilds()
@@ -65,11 +69,12 @@ properties properties: [
 
     		   stage('Testing') {
 			echo "Testing PHP Website"
-			dir("cd ${deploy_dir}"){
-			    sh "sudo java -jar projCert.jar"
+			   sh "sudo wget ${DRIVER}"
+			   sh "sudo unzip ${DRIVER} -d ${USER_HOME}"
+			   sh "sudo chown ${USER}:${USER} ${CHROME_DRIVER}
+			   sh "sudo java -jar projCert.jar"
 			    //sh " sleep 60s"
 			    //timeout(time: 1, unit: 'MINUTES')
-			}
 		   }	
 
 		   stage('clean up') {			
