@@ -11,16 +11,16 @@
     
 		stage('Puppet Install') {
 		        echo "Installing Puppet Agent"
-			sh "whoami"
-			sh "sudo ufw allow 8140"
-			sh "wget https://apt.puppetlabs.com/puppet6-release-bionic.deb"
-			sh "sudo dpkg -i puppet6-release-bionic.deb"
-			sh "sudo apt-get -y install puppet"
-			sh "sudo apt -y autoremove"
+			//sh "whoami"
+			//sh "sudo ufw allow 8140"
+			//sh "wget https://apt.puppetlabs.com/puppet6-release-bionic.deb"
+			//sh "sudo dpkg -i puppet6-release-bionic.deb"
+			//sh "sudo apt-get -y install puppet"
+			//sh "sudo apt -y autoremove"
 			//sh " sleep 100s"
-			sh "sudo puppet resource service puppet ensure=running enable=true"
+			//sh "sudo puppet resource service puppet ensure=running enable=true"
 			//sh "sudo puppet agent --waitforcert 60"
-			sh " sleep 10s"
+			//sh " sleep 10s"
 			}
         	}   
 
@@ -38,7 +38,7 @@
 	   node("jenkins_test_server") {
 		stage('Docker_Installation') {
 			echo "Installing Docker on PuppetAgent"
-			sh "sudo puppet agent -t"
+			//sh "sudo puppet agent -t"
 			timeout(time: 1, unit: 'MINUTES')
 			}
 
@@ -46,7 +46,7 @@
 			echo "Installing Docker on PuppetAgent"
 			dockerfile {
 				filename 'Dockerfile'
-				dir '/var/lib/jenkins/devops-training'
+				//dir '/var/lib/jenkins/devops-training'
 				label 'projcert'
 				args '-v /tmp:/tmp'
 				}
