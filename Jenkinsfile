@@ -7,7 +7,7 @@ USER_HOME='/home/edureka'
 DRIVER='https://chromedriver.storage.googleapis.com/76.0.3809.126/chromedriver_linux64.zip'
 USER="jenkins"
 CHROME_FILE='chromedriver_linux64.zip'
-CHROME_DRIVER="${USER_HOME}/chromedriver_linux64.zip"
+CHROME_DRIVER="${USER_HOME}/chromedriver"
 JAR_FILE="projCert.jar"
 
 properties properties: [
