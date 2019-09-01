@@ -47,7 +47,7 @@
 
                    stage('Docker_Deployment') {			
 		   	echo "Deploying A Docker Container with PHP Website"
-		   	sh "cd $projhome"
+		   	sh "cd /var/lib/jenkins/workspace/test_project1"
             		sh "docker build -t projcert ."
             		timeout(time: 4, unit: 'MINUTES')
             	   	}
