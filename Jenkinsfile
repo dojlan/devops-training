@@ -1,10 +1,18 @@
+#!/usr/bin/env groovy
+import groovy.util.*
+
+work_dir = '/var/lib/jenkins/workspace'
+deploy_dir = "${work_dir}/test_project1"
+
+properties properties: [
+  disableConcurrentBuilds()
+]
 
 	try {
 	   node("jenkins_test_server") {
 	        env.JAVA_HOME=tool name:  'myjava', type: 'jdk'
             	def mvnHome=tool name:  'mymaven', type: 'maven'
             	def mvnCMD="${mvnHome}/bin/mvn"
-		def projhome="/var/lib/jenkins/workspace/test_project1"
 			
 		stage ('checkout') {
 			checkout scm 
@@ -37,8 +45,6 @@
         	}
         
 	   node("jenkins_test_server") {
-		def projhome="/var/lib/jenkins/workspace/test_project1"
-		   
 		stage('Docker_Installation') {
 			echo "Installing Docker on PuppetAgent"
 			//sh "sudo puppet agent -t"
@@ -47,14 +53,14 @@
 
                    stage('Docker_Deployment') {			
 		   	echo "Deploying A Docker Container with PHP Website"
-		   	sh "cd /var/lib/jenkins/workspace/test_project1"
-            		sh "docker build -t projcert ."
+			sh "cd ${deploy_dir}"
+            		sh "sudo docker build -t projcert ."
             		timeout(time: 4, unit: 'MINUTES')
             	   	}
             
 		   stage('Docker_Container_Run') {
 			echo "Running Docker Container on port 8010"
-                	sh "docker run -itd -p 8010:80 --name=my_cert_proj projcert"
+                	sh "sudo docker run -itd -p 8010:80 --name=my_cert_proj projcert"
             		} 
 
     		   stage('Testing') {
