@@ -46,7 +46,7 @@
 			echo "Installing Docker on PuppetAgent"
 			dockerfile {
 				filename 'Dockerfile'
-				//dir '/var/lib/jenkins/devops-training'
+				dir '/var/lib/jenkins/workspace/test_project1'
 				label 'projcert'
 				args '-v /tmp:/tmp'
 				}
