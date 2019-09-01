@@ -45,17 +45,17 @@ properties properties: [
         	}
         
 	   node("jenkins_test_server") {
-		stage('Docker_Installation') {
-			echo "Installing Docker on PuppetAgent"
+		   stage('Docker_Installation') {
+			echo "Installing Docker on Puppet Clients"
 			//sh "sudo puppet agent -t"
-			timeout(time: 1, unit: 'MINUTES')
+			//sh " sleep 60s"
 			}
 
                    stage('Docker_Deployment') {			
 		   	echo "Deploying A Docker Container with PHP Website"
 			sh "cd ${deploy_dir}"
             		sh "sudo docker build -t projcert ."
-            		timeout(time: 4, unit: 'MINUTES')
+            		sh " sleep 240s"
             	   	}
             
 		   stage('Docker_Container_Run') {
@@ -67,7 +67,8 @@ properties properties: [
 			echo "Testing PHP Website"
 			dir("cd /var/lib/jenkins/devops-training"){
 			sh "sudo java -jar projCert.jar"
-			timeout(time: 1, unit: 'MINUTES')
+			sh " sleep 60s"
+			//timeout(time: 1, unit: 'MINUTES')
 			}
 		   }	
 
