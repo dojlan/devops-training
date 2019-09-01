@@ -4,6 +4,7 @@
 	        env.JAVA_HOME=tool name:  'myjava', type: 'jdk'
             	def mvnHome=tool name:  'mymaven', type: 'maven'
             	def mvnCMD="${mvnHome}/bin/mvn"
+		def projhome="/var/lib/jenkins/workspace/test_project1"
 			
 		stage ('checkout') {
 			checkout scm 
@@ -36,28 +37,20 @@
         	}
         
 	   node("jenkins_test_server") {
+		def projhome="/var/lib/jenkins/workspace/test_project1"
+		   
 		stage('Docker_Installation') {
 			echo "Installing Docker on PuppetAgent"
 			//sh "sudo puppet agent -t"
 			timeout(time: 1, unit: 'MINUTES')
 			}
 
-            	stage('Docker_Image_Pull') {
-			echo "Installing Docker on PuppetAgent"
-			dockerfile {
-				filename 'Dockerfile'
-				dir '/var/lib/jenkins/workspace/test_project1'
-				label 'projcert'
-				args '-v /tmp:/tmp'
-				}
-			}
-
-            //stage('Docker_Deployment') {			
-		    //    echo "Deploying A Docker Container with PHP Website"
-		    //    sh "cd /var/lib/jenkins/devops-training"
-            //    sh "docker build -t projcert ."
-            //    timeout(time: 4, unit: 'MINUTES')
-            //}
+                   stage('Docker_Deployment') {			
+		   	echo "Deploying A Docker Container with PHP Website"
+		   	sh "cd $projhome"
+            		sh "docker build -t projcert ."
+            		timeout(time: 4, unit: 'MINUTES')
+            	   	}
             
 		   stage('Docker_Container_Run') {
 			echo "Running Docker Container on port 8010"
