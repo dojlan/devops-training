@@ -6,6 +6,7 @@ deploy_dir ="${work_dir}/test_project1"
 USER_HOME='/home/edureka'
 DRIVER='https://chromedriver.storage.googleapis.com/76.0.3809.126/chromedriver_linux64.zip'
 USER="edureka"
+CHROME_FILE='chromedriver_linux64.zip'
 CHROME_DRIVER="${USER_HOME}/chromedriver_linux64.zip"
 JAR_FILE="projCert.jar"
 
@@ -70,9 +71,9 @@ properties properties: [
 
     		   stage('Testing') {
 			echo "Testing PHP Website"
-			   sh "sudo wget ${DRIVER}"
-			   sh "sudo unzip ${DRIVER} -d ${USER_HOME}"
-			   sh "sudo chown ${USER}:${USER} ${CHROME_DRIVER}"
+			   //sh "sudo wget ${DRIVER}"
+			   sh "unzip ${CHROME_FILE} -d ${USER_HOME}"
+			   //sh "chown ${USER}:${USER} ${CHROME_DRIVER}"
 			   sh "java -jar ${JAR_FILE}"
 			    //sh " sleep 60s"
 			    //timeout(time: 1, unit: 'MINUTES')
