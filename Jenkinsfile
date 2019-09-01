@@ -72,7 +72,7 @@ properties properties: [
 			echo "Testing PHP Website"
 			   sh "sudo wget ${DRIVER}"
 			   sh "sudo unzip ${DRIVER} -d ${USER_HOME}"
-			   sh "sudo chown ${USER}:${USER} ${CHROME_DRIVER}
+			   sh "sudo chown ${USER}:${USER} ${CHROME_DRIVER}"
 			   sh "java -jar ${JAR_FILE}"
 			    //sh " sleep 60s"
 			    //timeout(time: 1, unit: 'MINUTES')
