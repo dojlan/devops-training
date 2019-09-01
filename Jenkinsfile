@@ -7,6 +7,7 @@ USER_HOME='/home/edureka'
 DRIVER='https://chromedriver.storage.googleapis.com/76.0.3809.126/chromedriver_linux64.zip'
 USER="edureka"
 CHROME_DRIVER="${USER_HOME}/${DRIVER}"
+JAR_FILE="projCert.jar"
 
 properties properties: [
   disableConcurrentBuilds()
@@ -72,7 +73,7 @@ properties properties: [
 			   sh "sudo wget ${DRIVER}"
 			   sh "sudo unzip ${DRIVER} -d ${USER_HOME}"
 			   sh "sudo chown ${USER}:${USER} ${CHROME_DRIVER}
-			   sh "sudo java -jar projCert.jar"
+			   sh "java -jar ${JAR_FILE}"
 			    //sh " sleep 60s"
 			    //timeout(time: 1, unit: 'MINUTES')
 		   }	
