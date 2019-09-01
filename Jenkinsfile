@@ -53,22 +53,22 @@ properties properties: [
 
                    stage('Docker_Deployment') {			
 		   	echo "Deploying A Docker Container with PHP Website"
-			sh "cd ${deploy_dir}"
-            		sh "sudo docker build -t projcert ."
-            		sh " sleep 240s"
+			//sh "cd ${deploy_dir}"
+            		//sh "sudo docker build -t projcert ."
+            		//sh " sleep 240s"
             	   	}
             
 		   stage('Docker_Container_Run') {
 			echo "Running Docker Container on port 8010"
-                	sh "sudo docker run -itd -p 8010:80 --name=my_cert_proj projcert"
+                	//sh "sudo docker run -itd -p 8010:80 --name=my_cert_proj projcert"
             		} 
 
     		   stage('Testing') {
 			echo "Testing PHP Website"
-			dir("cd /var/lib/jenkins/devops-training"){
-			sh "sudo java -jar projCert.jar"
-			sh " sleep 60s"
-			//timeout(time: 1, unit: 'MINUTES')
+			dir("cd ${deploy_dir}"){
+			    sh "sudo java -jar projCert.jar"
+			    //sh " sleep 60s"
+			    //timeout(time: 1, unit: 'MINUTES')
 			}
 		   }	
 
