@@ -4,8 +4,8 @@ import groovy.util.*
 work_dir = '/var/lib/jenkins/workspace'
 deploy_dir ="${work_dir}/test_project1"
 USER_HOME='/home/edureka'
-DRIVER='wget https://chromedriver.storage.googleapis.com/76.0.3809.126/chromedriver_linux64.zip'
-USER="${edureka}"
+DRIVER='https://chromedriver.storage.googleapis.com/76.0.3809.126/chromedriver_linux64.zip'
+USER="edureka"
 CHROME_DRIVER="${USER_HOME}/${DRIVER}"
 
 properties properties: [
